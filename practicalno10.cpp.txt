@@ -1,0 +1,87 @@
+#include <iostream>
+using namespace std;
+
+class Stack {
+public:
+    char stack_array[50];
+    int top;
+
+    Stack() {
+        top = -1;
+    }
+
+    void push(char symbol) {
+        if (top < 49) {
+            stack_array[++top] = symbol;
+        } else {
+            cout << "\nStack overflow!\n";
+        }
+    }
+
+    char pop() {
+        if (top >= 0) {
+            return stack_array[top--];
+        } else {
+            return '#'; // Indicating stack is empty
+        }
+    }
+
+    bool empty() {
+        return top == -1;
+    }
+
+    bool full() {
+        return top == 49;
+    }
+
+    int precedence(char symbol) {
+        switch (symbol) {
+            case '+': case '-': return 1;
+            case '*': case '/': return 2;
+            case '(': return 0;
+            default: return -1;
+        }
+    }
+
+    void convertToPostfix() {
+        char infix[50], postfix[50], entry;
+        int p = 0;
+        cout << "\nEnter an infix expression: ";
+        cin >> infix;
+
+        for (int i = 0; infix[i] != '\0'; i++) {
+            if (infix[i] == '(') {
+                push(infix[i]);
+            } else if (infix[i] == ')') {
+                while ((entry = pop()) != '(') {
+                    postfix[p++] = entry;
+                }
+            } else if (infix[i] == '+' || infix[i] == '-' || infix[i] == '*' || infix[i] == '/') {
+                while (!empty() && precedence(infix[i]) <= precedence(stack_array[top])) {
+                    postfix[p++] = pop();
+                }
+                push(infix[i]);
+            } else {
+                postfix[p++] = infix[i];
+            }
+        }
+
+        while (!empty()) {
+            postfix[p++] = pop();
+        }
+
+        postfix[p] = '\0'; // Null-terminate the postfix expression
+        cout << "\nPostfix expression: " << postfix << endl;
+    }
+};
+
+int main() {
+    Stack expr;
+    char choice = 'y';
+    while (choice == 'y') {
+        expr.convertToPostfix();
+        cout << "\nDo you want to continue? (y/n): ";
+        cin >> choice;
+    }
+    return 0;
+}

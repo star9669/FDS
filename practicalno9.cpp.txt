@@ -1,0 +1,91 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+class Braces {
+    char st[20];
+    int top;
+
+public:
+    void push(char a);
+    void pop();
+    void checkExpression();
+};
+
+void Braces::push(char a) {
+    top++;
+    st[top] = a;
+}
+
+void Braces::pop() {
+    top--;
+}
+
+void Braces::checkExpression() {
+    char ch[20];
+    int i = 0;
+    top = -1;
+    cout << "Enter the expression: ";
+    cin >> ch;
+
+    while (ch[i] != '\0') {
+        if (ch[i] == '{' || ch[i] == '[' || ch[i] == '(') {
+            push(ch[i]);
+        } else if (ch[i] == '}') {
+            if (top != -1 && st[top] == '{') {
+                pop();
+            } else {
+                cout << "\nMatching opening brace '{' is not found!";
+                return;
+            }
+        } else if (ch[i] == ']') {
+            if (top != -1 && st[top] == '[') {
+                pop();
+            } else {
+                cout << "\nMatching opening brace '[' is not found!";
+                return;
+            }
+        } else if (ch[i] == ')') {
+            if (top != -1 && st[top] == '(') {
+                pop();
+            } else {
+                cout << "\nMatching opening brace '(' is not found!";
+                return;
+            }
+        }
+        i++;
+    }
+
+    if (top == -1) {
+        cout << "\nExpression is well parenthesized.\n";
+    } else {
+        cout << "\nExpression is not well parenthesized.\n";
+    }
+}
+
+int main() {
+    Braces b;
+    int choice;
+
+    do {
+        cout << "\nMenu:";
+        cout << "\n1. Check if the expression is well parenthesized";
+        cout << "\n2. Exit";
+        cout << "\nEnter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                b.checkExpression();
+                break;
+            case 2:
+                cout << "Exiting program...\n";
+                break;
+            default:
+                cout << "Invalid choice! Please try again.\n";
+        }
+
+    } while (choice != 2);
+
+    return 0;
+}

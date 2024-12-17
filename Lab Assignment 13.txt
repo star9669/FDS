@@ -1,0 +1,167 @@
+                                                       Lab Assignment No.13
+
+/* Pizza parlor accepting maximum M orders. Orders are served in first come first served basis. Order once placed cannot be cancelled. Write C++ program to simulate the system using circular queue using array. */
+
+//Program:
+
+#include <iostream>
+#include <string>
+
+class CircularQueue {
+private:
+    std::string* queue;  // Array to hold orders
+    int front;           // Index of the front of the queue
+    int rear;            // Index of the rear of the queue
+    int maxSize;         // Maximum size of the queue
+    int currentSize;     // Current number of orders in the queue
+
+public:
+    CircularQueue(int size) {
+        maxSize = size;
+        queue = new std::string[maxSize];
+        front = -1;
+        rear = -1;
+        currentSize = 0;
+    }
+
+    ~CircularQueue() {
+        delete[] queue;
+    }
+
+    bool isFull() {
+        return currentSize == maxSize;
+    }
+
+    bool isEmpty() {
+        return currentSize == 0;
+    }
+
+    void addOrder(const std::string& order) {
+        if (isFull()) {
+            std::cout << "Order queue is full. Cannot accept new orders." << std::endl;
+            return;
+        }
+        if (isEmpty()) {
+            front = 0;
+        }
+        rear = (rear + 1) % maxSize;
+        queue[rear] = order;
+        currentSize++;
+        std::cout << "Order added: " << order << std::endl;
+    }
+
+    void serveOrder() {
+        if (isEmpty()) {
+            std::cout << "No orders to serve." << std::endl;
+            return;
+        }
+        std::cout << "Serving order: " << queue[front] << std::endl;
+        front = (front + 1) % maxSize;
+        currentSize--;
+    }
+
+    void displayOrders() {
+        if (isEmpty()) {
+            std::cout << "No current orders." << std::endl;
+            return;
+        }
+        std::cout << "Current Orders in the queue: ";
+        for (int i = 0; i < currentSize; i++) {
+            std::cout << queue[(front + i) % maxSize] << " ";
+        }
+        std::cout << std::endl;
+    }
+};
+
+int main() {
+    int maxOrders;
+    std::cout << "Enter maximum number of orders: ";
+    std::cin >> maxOrders;
+
+    CircularQueue pizzaQueue(maxOrders);
+    int choice;
+    std::string order;
+
+    do {
+        std::cout << "\n1. Add Order\n2. Serve Order\n3. Display Orders\n4. Exit\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                std::cout << "Enter order details: ";
+                std::cin.ignore(); // Ignore newline character
+                std::getline(std::cin, order);
+                pizzaQueue.addOrder(order);
+                break;
+            case 2:
+                pizzaQueue.serveOrder();
+                break;
+            case 3:
+                pizzaQueue.displayOrders();
+                break;
+            case 4:
+                std::cout << "Exiting..." << std::endl;
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again." << std::endl;
+        }
+    } while (choice != 4);
+
+    return 0;
+}
+
+output:
+
+Enter maximum number of orders: 4
+
+1. Add Order
+2. Serve Order
+3. Display Orders
+4. Exit
+Enter your choice: 1
+Enter order details: 2
+Order added: 2
+
+1. Add Order
+2. Serve Order
+3. Display Orders
+4. Exit
+Enter your choice: 1
+Enter order details: 1
+Order added: 1
+
+1. Add Order
+2. Serve Order
+3. Display Orders
+4. Exit
+Enter your choice: 2
+Serving order: 2
+
+1. Add Order
+2. Serve Order
+3. Display Orders
+4. Exit
+Enter your choice: 2
+Serving order: 1
+
+1. Add Order
+2. Serve Order
+3. Display Orders
+4. Exit
+Enter your choice: 2
+No orders to serve.
+
+1. Add Order
+2. Serve Order
+3. Display Orders
+4. Exit
+Enter your choice: 3
+No current orders.
+
+1. Add Order
+2. Serve Order
+3. Display Orders
+4. Exit
+Enter your choice: 4
+Exiting...

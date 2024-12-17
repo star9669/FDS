@@ -1,0 +1,205 @@
+Program :
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+struct Node {
+    int prn, rollno;
+    char name[50];
+    Node* next;
+};
+
+class Info {
+    Node* head = NULL;
+public:
+    Node* create();
+    void insertAtBegin();
+    void insertAtEnd();
+    void insertAfter(int rollno);
+    void deleteAtBegin();
+    void deleteAtEnd();
+    void deleteByPrn(int prn);
+    void display();
+    void count();
+    void concat(Info& other);
+};
+
+Node* Info::create() {
+    Node* newNode = new Node;
+    cout << "Enter name: ";
+    cin >> newNode->name;
+    cout << "Enter PRN: ";
+    cin >> newNode->prn;
+    cout << "Enter Roll No: ";
+    cin >> newNode->rollno;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void Info::insertAtBegin() {
+    Node* newNode = create();
+    newNode->next = head;
+    head = newNode;
+}
+
+void Info::insertAtEnd() {
+    Node* newNode = create();
+    if (head == NULL) {
+        head = newNode;
+    } else {
+        Node* temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+
+void Info::insertAfter(int rollno) {
+    Node* newNode = create();
+    Node* temp = head;
+    while (temp != NULL && temp->rollno != rollno) {
+        temp = temp->next;
+    }
+    if (temp != NULL) {
+        newNode->next = temp->next;
+        temp->next = newNode;
+    } else {
+        cout << "Roll number not found.\n";
+    }
+}
+
+void Info::deleteAtBegin() {
+    if (head != NULL) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    } else {
+        cout << "List is empty.\n";
+    }
+}
+
+void Info::deleteAtEnd() {
+    if (head == NULL) {
+        cout << "List is empty.\n";
+        return;
+    }
+    if (head->next == NULL) {
+        delete head;
+        head = NULL;
+        return;
+    }
+    Node* temp = head;
+    while (temp->next != NULL && temp->next->next != NULL) {
+        temp = temp->next;
+    }
+    delete temp->next;
+    temp->next = NULL;
+}
+
+void Info::deleteByPrn(int prn) {
+    if (head == NULL) {
+        cout << "List is empty.\n";
+        return;
+    }
+    if (head->prn == prn) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+        return;
+    }
+    Node* temp = head;
+    while (temp->next != NULL && temp->next->prn != prn) {
+        temp = temp->next;
+    }
+    if (temp->next != NULL) {
+        Node* toDelete = temp->next;
+        temp->next = temp->next->next;
+        delete toDelete;
+    } else {
+        cout << "PRN not found.\n";
+    }
+}
+
+void Info::display() {
+    if (head == NULL) {
+        cout << "List is empty.\n";
+        return;
+    }
+    Node* temp = head;
+    cout << "PRN\tRoll No\tName\n";
+    while (temp != NULL) {
+        cout << temp->prn << "\t" << temp->rollno << "\t" << temp->name << "\n";
+        temp = temp->next;
+    }
+}
+
+void Info::count() {
+    int count = 0;
+    Node* temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    cout << "Number of members: " << count << "\n";
+}
+
+void Info::concat(Info& other) {
+    if (head == NULL) {
+        head = other.head;
+    } else {
+        Node* temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = other.head;
+    }
+    other.head = NULL;
+}
+
+int main() {
+    Info list1, list2;
+    int choice, rollno, prn;
+    char cont = 'y';
+
+    while (cont == 'y' || cont == 'Y') {
+        cout << "\nChoose an option:\n";
+        cout << "1. Insert at beginning\n";
+        cout << "2. Insert at end\n";
+        cout << "3. Insert after a roll number\n";
+        cout << "4. Delete from beginning\n";
+        cout << "5. Delete from end\n";
+        cout << "6. Delete by PRN\n";
+        cout << "7. Count members\n";
+        cout << "8. Display list\n";
+        cout << "9. Concatenate two lists\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: list1.insertAtBegin(); break;
+            case 2: list1.insertAtEnd(); break;
+            case 3:
+                cout << "Enter roll number: ";
+                cin >> rollno;
+                list1.insertAfter(rollno);
+                break;
+            case 4: list1.deleteAtBegin(); break;
+            case 5: list1.deleteAtEnd(); break;
+            case 6:
+                cout << "Enter PRN: ";
+                cin >> prn;
+                list1.deleteByPrn(prn);
+                break;
+            case 7: list1.count(); break;
+            case 8: list1.display(); break;
+            case 9: list1.concat(list2); break;
+            default: cout << "Invalid choice.\n"; break;
+        }
+
+        cout << "Do you want to continue? (y/n): ";
+        cin >> cont;
+    }
+
+    return 0;
+}

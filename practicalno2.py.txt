@@ -1,0 +1,80 @@
+def average(marks):
+    total = 0
+    count = 0
+    for mark in marks:
+        if mark != -999:
+            total += mark
+            count += 1
+    if count > 0:
+        avg = total / count
+    else:
+        avg = 0
+    print("Average Marks:", avg)
+
+def highest(marks):
+    max_marks = -999
+    for mark in marks:
+        if mark != -999 and mark > max_marks:
+            max_marks = mark
+    print("Highest Marks:", max_marks)
+
+def lowest(marks):
+    min_marks = 999
+    for mark in marks:
+        if mark != -999 and mark < min_marks:
+            min_marks = mark
+    print("Lowest Marks:", min_marks)
+
+def absent(marks):
+    count = 0
+    for mark in marks:
+        if mark == -999:
+            count += 1
+    print("Absent Students:", count)
+
+def most_frequent(marks):
+    freq = {}
+    for mark in marks:
+        if mark != -999:
+            freq[mark] = freq.get(mark, 0) + 1
+
+    most_freq = None
+    highest_count = 0
+    for mark, count in freq.items():
+        if count > highest_count:
+            most_freq = mark
+            highest_count = count
+
+    print("Most Frequent Marks:", most_freq, "with Frequency:", highest_count)
+
+marks = []
+num_students = int(input("Enter total number of students: "))
+for i in range(num_students):
+    mark = int(input(f"Enter marks for student {i + 1}: "))
+    marks.append(mark)
+
+while True:
+    print("\n1. Average Marks")
+    print("2. Highest Marks")
+    print("3. Lowest Marks")
+    print("4. Absent Students")
+    print("5. Most Frequent Marks")
+    print("6. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        average(marks)
+    elif choice == 2:
+        highest(marks)
+    elif choice == 3:
+        lowest(marks)
+    elif choice == 4:
+        absent(marks)
+    elif choice == 5:
+        most_frequent(marks)
+    elif choice == 6:
+        print("Thank you!")
+        break
+    else:
+        print("Invalid choice! Please try again.")

@@ -1,0 +1,79 @@
+                                                        Lab Assignment No.2
+
+*** Write a python program using functions to compute following :
+a) List of students who play both cricket and badminton.
+b) List of students who play either cricket or badminton but not both.
+c) Number of student who play neither cricket nor badminton.
+d) Number of student who play cricket and football but not badminton. ***
+
+#Program:
+
+
+cricket = ['a', 'b', 'c', 'd', 'e', 'f']
+badminton = ['g', 'h', 'i', 'j', 'b', 'd', 'e']
+football = ['k', 'l', 'm', 'n', 'o', 'i', 'j', 'f', 'e']
+
+def intersection(cricket, badminton):
+    result = []
+    for item in cricket:
+        if item in badminton:
+            result.append(item)
+    return result
+
+print("Common players in cricket and badminton are:", intersection(cricket, badminton))
+
+def difference(cricket, badminton, football):
+    result = []
+    for item in cricket:
+        if item not in badminton and item not in football:
+            result.append(item)
+    return result
+
+print("Players who play only cricket:", difference(cricket, badminton, football))
+
+def diff_badminton(cricket, badminton, football):
+    result = []
+    for item in badminton:
+        if item not in cricket and item not in football:
+            result.append(item)
+    return result
+
+print("Players who play only badminton:", diff_badminton(cricket, badminton, football))
+
+def diff_football(cricket, badminton, football):
+    result = []
+    for item in football:
+        if item not in cricket and item not in badminton:
+            result.append(item)
+    return result
+
+print("Players who play only football:", diff_football(cricket, badminton, football))
+
+def diff_cricket_football(cricket, badminton, football):
+    result = []
+    for item in cricket:
+        if item in football and item not in badminton:
+            result.append(item)
+    return result
+
+print("Players who play cricket and football but not badminton:", diff_cricket_football(cricket, badminton, football))
+
+def neither(cricket, badminton, football):
+    result = []
+    all_players = set(cricket + badminton + football)
+    for player in all_players:
+        if player not in cricket and player not in badminton and player not in football:
+            result.append(player)
+    return result
+
+print("Players who neither play cricket nor badminton nor football:", neither(cricket, badminton, football))
+
+
+output:
+
+Common players in cricket and badminton are: ['b', 'd', 'e']
+Players who play only cricket: ['a', 'c']
+Players who play only badminton: ['g', 'h']
+Players who play only football: ['k', 'l', 'm', 'n', 'o']
+Players who play cricket and football but not badminton: ['f']
+Players who neither play cricket nor badminton nor football: []
